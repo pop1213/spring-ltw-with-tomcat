@@ -1,0 +1,25 @@
+<!DOCTYPE aspectj PUBLIC "-//AspectJ//DTD//EN" "https://www.eclipse.org/aspectj/dtd/aspectj.dtd">
+<aspectj>
+
+   <!-- <weaver>
+        &lt;!&ndash; only weave classes in our application-specific packages &ndash;&gt;
+        <include within="com.example.demo.ltw.*"/>
+    </weaver>
+
+    <aspects>
+        &lt;!&ndash; weave in just this aspect &ndash;&gt;
+        <aspect name="com.example.demo.ltw.aspect.LogAspect"/>
+    </aspects>-->
+
+   <weaver options="-debug -showWeaveInfo">
+      <include within="com.example.demo.aspect.*"/>
+      <!-- only weave classes in our application-specific packages -->
+      <include within="com.example.demo.web.*"/>
+      <include within="com.example.demo.service.*"/>
+   </weaver>
+
+   <aspects>
+   <!-- weave in just this aspect -->
+      <aspect name="com.example.demo.aspect.LogAspect"/>
+   </aspects>
+</aspectj>
