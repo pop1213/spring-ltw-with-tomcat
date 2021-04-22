@@ -1,0 +1,2 @@
+# Spring load-time-weaver with tomcat8
+最新在学习aop，按照spring官网的例子写了个ltw的demo，发现在tomcat环境下（不使用Instrumentation），使用```@EnableLoadTimeWeaving```注解无法对@Component 和@Configuration注解的bean 织入advice，比如Controller、Service等等。
