@@ -1,7 +1,12 @@
 # SpringBoot load-time-weaver with tomcat8
+
+参考spring官网的例子写了个ltw的demo，发现在tomcat环境下（不使用Instrumentation），使用```@EnableLoadTimeWeaving```注解无法对@Bean、@Component 和@Configuration注解的bean 织入advice，比如Controller、Service等等，但是普通的new出来的对象能够正常aop。
+
+
+
 ### 什么是Load Time Weaving？
 
-字面意思即类加载时织入，即通过字节码编辑技术将切面织入目标类
+字面意思即类加载时织入，即类加载时通过字节码编辑技术将切面织入目标类
 
 ### 实现方式
 
@@ -9,11 +14,7 @@
 
 
 
-参考spring官网的例子写了个ltw的demo，发现在tomcat环境下（不使用Instrumentation），使用```@EnableLoadTimeWeaving```注解无法对@Bean、@Component 和@Configuration注解的bean 织入advice，比如Controller、Service等等，但是普通的new出来的对象能够正常aop。查看debug日志如下，果然如此
-
-```
- debug not weaving ...
-```
+### 解决过程
 
 为什么Controller、Service无法被织入，而不通过spring加载的对象能够被织入增强？猜测可能时spring容器中的bean 的类load时机的问题导致。跟踪```@EnableLoadTimeWeaving```代码，发现该注解import了一个```LoadTimeWeavingConfiguration```配置类，在类中通过@Bean注解定义了一个单例bean LoadTimeWeaver，该bean在实例化的过程中才会调用```AspectJWeavingEnabler.enableAspectJWeaving```从而使，ClassFileTransformer加入的classLoader中去。
 
@@ -31,4 +32,4 @@ builder.initializers(applicationContext-> {
 return builder.sources(DemoApplication.class);
 ```
 
- 
+  
